@@ -1,11 +1,17 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import app from "../../Firebase/firebase.config";
 
-const auth = getAuth(app);
 const Register = () => {
+  const [error, setError] = useState("");
+
+  const auth = getAuth(app);
+
   const handlerSubmit = (event) => {
+    // clear error
+    setError("");
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
@@ -14,10 +20,14 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const newUser = result.user;
-        console.log(newUser);
+        toast.success("Successfully Register", {
+          duration: 4000,
+        });
+        event.target.reset();
       })
       .catch((err) => {
-        console.error(err);
+        console.error(err.message);
+        setError(err?.statusText || err?.message);
       });
   };
 
@@ -33,7 +43,7 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Name</span>
               </label>
-              <input type="text" name="name" placeholder="Type your name" className="input input-bordered" required />
+              <input type="text" name="text" placeholder="Type your name" className="input input-bordered" required />
             </div>
             <div className="form-control">
               <label className="label">
@@ -56,6 +66,8 @@ const Register = () => {
                 </span>
               </label>
             </div>
+            <p className="text-red-600 font-medium">{error}</p>
+
             <div className="form-control mt-6">
               <button className="btn btn-primary">SIGN UP</button>
             </div>
