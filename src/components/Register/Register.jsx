@@ -17,6 +17,23 @@ const Register = () => {
     const email = event.target.email.value;
     const password = event.target.password.value;
 
+    // password validation
+    if (password.length < 6) {
+      setError("Password must be 6 Characters ");
+      return;
+    } else if (!/(?=.*\d)/.test(password)) {
+      setError("should password at least one digit");
+      return;
+    } else if (!/(?=.*[a-z])/.test(password)) {
+      setError("should password at least one lower case");
+      return;
+    } else if (!/(?=.*[A-Z])/.test(password)) {
+      setError("should password at least one upper case");
+      return;
+    } else if (!/(?=.*[`!@#$%^&*:_=-])/.test(password)) {
+      setError("should password at least one special case letter.");
+      return;
+    }
     // Create a new account firebase
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
@@ -62,7 +79,7 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type={showPassword ? "text" : "password"} placeholder="password" className="input input-bordered" required />
+              <input type={showPassword ? "text" : "password"} name="password" placeholder="password" className="input input-bordered" required />
               <div className="mt-4">
                 <span onClick={handlerPassword} className={`cursor-pointer  ${showPassword ? "text-[#1a73e8] font-bold" : "text-black"}  `}>
                   Show Password
