@@ -35,7 +35,7 @@ const Register = () => {
               </label>
               <input type="password" name="password" placeholder="password" className="input input-bordered" required />
               <label className="mt-4 text-lg ">
-                Already account?
+                Already account ?
                 <span>
                   <Link to="/sign-in" className="label-text-alt link link-hover text-blue-500 text-base ml-2 ">
                     Login here.
@@ -44,7 +44,7 @@ const Register = () => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Login</button>
+              <button className="btn btn-primary">SIGN UP</button>
             </div>
           </form>
         </div>
