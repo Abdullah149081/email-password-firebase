@@ -6,6 +6,7 @@ import app from "../../Firebase/firebase.config";
 
 const Register = () => {
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const auth = getAuth(app);
 
@@ -23,12 +24,17 @@ const Register = () => {
         toast.success("Successfully Register", {
           duration: 4000,
         });
+        // form clear
         event.target.reset();
       })
       .catch((err) => {
         console.error(err.message);
         setError(err?.statusText || err?.message);
       });
+  };
+
+  const handlerPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -56,7 +62,13 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+              <input type={showPassword ? "text" : "password"} placeholder="password" className="input input-bordered" required />
+              <div className="mt-4">
+                <span onClick={handlerPassword} className={`cursor-pointer  ${showPassword ? "text-[#1a73e8] font-bold" : "text-black"}  `}>
+                  Show Password
+                </span>
+              </div>
+
               <label className="mt-4 text-lg ">
                 Already account ?
                 <span>
