@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 .btn {
   @apply font-bold bg-pink-500 rounded-full px-8 py-4 hover:text-gray-600;
+}
+.active {
+  @apply font-bold bg-gray-700 text-purple-700 rounded-full px-8 py-4;
+}
+
+.default {
+  @apply font-bold  bg-pink-500 rounded-full px-8 py-4 hover:text-gray-600;
 }
