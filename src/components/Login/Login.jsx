@@ -6,6 +6,7 @@ import app from "../../Firebase/firebase.config";
 const auth = getAuth(app);
 const Login = () => {
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handlerLogin = (e) => {
     setError("");
@@ -18,6 +19,9 @@ const Login = () => {
       .catch((err) => {
         setError(err.message);
       });
+  };
+  const handlerPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -39,8 +43,15 @@ const Login = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" name="password" placeholder="password" className="input input-bordered" />
+              <input type={showPassword ? "text" : "password"} name="password" placeholder="password" className="input input-bordered" />
             </div>
+
+            <div className="mt-4">
+              <span onClick={handlerPassword} className={`cursor-pointer  ${showPassword ? "text-[#1a73e8] font-bold" : "text-black"}  `}>
+                Show Password
+              </span>
+            </div>
+
             <div className="flex justify-between items-center">
               <label className="label">
                 <Link className="label-text-alt link link-hover">Forgot password?</Link>
