@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -41,6 +41,7 @@ const Register = () => {
         toast.success("Successfully Register", {
           duration: 4000,
         });
+        validationEmail(newUser);
         // form clear
         event.target.reset();
       })
@@ -48,6 +49,12 @@ const Register = () => {
         console.error(err.message);
         setError(err?.statusText || err?.message);
       });
+  };
+
+  const validationEmail = (newUser) => {
+    sendEmailVerification(newUser).then(() => {
+      toast.custom("verification email ");
+    });
   };
 
   const handlerPassword = () => {

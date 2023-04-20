@@ -1,5 +1,6 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import app from "../../Firebase/firebase.config";
 
@@ -7,6 +8,7 @@ const auth = getAuth(app);
 const Login = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const emailRef = useRef();
 
   const handlerLogin = (e) => {
     setError("");
@@ -23,6 +25,23 @@ const Login = () => {
   const handlerPassword = () => {
     setShowPassword(!showPassword);
   };
+  
+  const resetPassword = () => {
+    const email = emailRef.current.value;
+
+    if (!email) {
+      toast.error("please provided Your email address ");
+      return;
+    }
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success("Please check your email address ");
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
 
   return (
     <div className="hero mt-20">
@@ -36,7 +55,7 @@ const Login = () => {
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
-              <input type="email" name="email" placeholder="email" className="input input-bordered" />
+              <input ref={emailRef} type="email" name="email" placeholder="email" className="input input-bordered" />
             </div>
 
             <div className="form-control">
@@ -54,7 +73,9 @@ const Login = () => {
 
             <div className="flex justify-between items-center">
               <label className="label">
-                <Link className="label-text-alt link link-hover">Forgot password?</Link>
+                <span onClick={resetPassword} className="label-text-alt link link-hover">
+                  Forgot password?
+                </span>
               </label>
               <label>
                 New member ?
