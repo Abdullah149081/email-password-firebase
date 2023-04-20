@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, updateProfile } from "firebase/auth";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -16,6 +16,7 @@ const Register = () => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
+    const name = event.target.text.value;
 
     // password validation
     if (password.length < 6) {
@@ -38,12 +39,14 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const newUser = result.user;
+        console.log(newUser);
         toast.success("Successfully Register", {
-          duration: 4000,
+          duration: 1000,
         });
-        validationEmail(newUser);
         // form clear
         event.target.reset();
+        validationEmail(newUser);
+        updateUserData(newUser, name);
       })
       .catch((err) => {
         console.error(err.message);
@@ -53,12 +56,23 @@ const Register = () => {
 
   const validationEmail = (newUser) => {
     sendEmailVerification(newUser).then(() => {
-      toast.custom("verification email ");
+      toast("verification email ");
     });
   };
 
   const handlerPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const updateUserData = (newUser, name) => {
+    console.log(newUser, name);
+    updateProfile(newUser, {
+      displayName: name,
+    })
+      .then(() => {})
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
   return (
